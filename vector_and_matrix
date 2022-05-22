@@ -1,0 +1,50 @@
+#include "vector.h"
+#include "matrix.h"
+
+template <class T>
+Vector<T> operator*(Matrix<T>& matrix, Vector<T>& vector)
+{
+  if (vector.GetSize() == matrix.GetB())
+  {
+    T* REST = new T[matrix.GetB()];
+    T** MATRIXT = matrix.GetMatrix();
+    T* VECTORT = vector.GetVector();
+    for (size_t i = 0; i < matrix.GetR(); i++)
+    {
+      REST[i] = 0;
+      for (size_t j = 0; j < matrix.GetB(); j++)
+        REST[i] = REST[i] + (MATRIXT[i][j] * VECTORT[j]);
+    }
+    Vector<T> res(matrix.GetR(), REST);
+    delete[] REST;
+    return res;
+  }
+  else
+    throw "matrix.B != vector.R";
+};
+
+template<class T>
+Matrix<T> operator*(Vector<T>& vector, Matrix<T>& matrix)
+{
+  if (vector.GetSize() == matrix.GetB() && matrix.GetR() == 1)
+  {
+    size_t SIZET = vector.GetSize();
+    T** REST = new T * [SIZET];
+    for (size_t i = 0; i < SIZET; i++)
+      REST[i] = new T[SIZET];
+
+    for (size_t i = 0; i < SIZET; i++)
+      for (size_t j = 0; j < SIZET; j++)
+      {
+        REST[i][j] = (matrix[0][j] * vector[i]);
+      }
+    Matrix<T> res(SIZET, SIZET, REST);
+
+    for (size_t i = 0; i < SIZET; i++)
+      delete[] REST[i];
+    delete[] REST;
+    return res;
+  }
+  else
+    throw "vector.GetSize() != matrix.GetB() OR matrix.GetR() != 1";
+}
