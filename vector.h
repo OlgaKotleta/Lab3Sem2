@@ -17,6 +17,10 @@ public:
   size_t GetSize();
   void SetVector(size_t size);
 
+  void BubbleSort();
+  void InsertionSort();
+  void QuickSort(size_t first, size_t last);
+
   Vector<T> operator=(const Vector<T>& obj);
   bool operator ==(const Vector<T>& obj);
   T operator [](const size_t index);
@@ -257,4 +261,79 @@ int Vector<T>::position(T value, int entry)
   }
 
   return -1;
+}
+
+template<class T>
+void Vector<T>::BubbleSort()
+{
+  T temp = 0;
+  for (size_t i = 0; i < size; i++)
+  {
+    for (size_t j = 0; j < i; j++)
+    {
+      if (arr[j] > arr[j + 1])
+      {
+        temp = arr[j];
+        arr[j] = arr[j + 1];
+        arr[j + 1] = temp;
+      }
+    }
+  }
+}
+
+template<class T>
+void Vector<T>::InsertionSort()
+{
+  size_t location = 0;
+  T temp = 0;
+  for (size_t i = 1; i < size; i++)
+  {
+    temp = arr[i];
+    location = i - 1;
+    while (location >= 0 && arr[location] > temp)
+    {
+      arr[location + 1] = arr[location];
+      location = location - 1;
+    }
+    arr[location + 1] = temp;
+  }
+}
+
+template<class T>
+void Vector<T>::QuickSort(size_t first, size_t last)
+{
+  try
+  {
+    size_t i = first, j = last;
+    T temp;
+    T middle = arr[(first + last) / 2];
+    do {
+      while (arr[i] < middle)
+        i++;
+      while (arr[j] > middle)
+        j--;
+
+      if (i <= j)
+      {
+        if (i < j)
+        {
+          temp = arr[i];
+          arr[i] = arr[j];
+          arr[j] = temp;
+        }
+        i++;
+        j--;
+      }
+    } while (i <= j);
+
+    if (i < last)
+      QuickSort(i, last);
+    if (first < j)
+      QuickSort(first, j);
+  }
+  catch (std::exception e)
+  {
+    std::cout << e.what() << std::endl;
+    throw;
+  }
 }
