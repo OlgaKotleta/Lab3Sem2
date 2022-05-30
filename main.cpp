@@ -50,6 +50,9 @@ int main()
   Vector1 = _Vector;
 
   VectorDouble = (_Vector / Vector1);
+  VectorDouble.BubbleSort();
+  Vector1.InsertionSort();
+  _Vector.QuickSort(0, (_Vector.GetSize() - 1));
   Matrix<int> Vector;
   Vector.SetMatrix(1, 3);
 
@@ -102,3 +105,5 @@ int main()
   };
   return 0;
 }
+
+
